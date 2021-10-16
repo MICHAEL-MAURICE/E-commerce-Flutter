@@ -7,7 +7,7 @@ class Login_Shop extends StatelessWidget {
 
         children: [
           Text("LogIn",
-            style: TextStyle(fontSize: 18.0),)
+            style: TextStyle(fontSize: 20.0),)
         ],
       )
     );
