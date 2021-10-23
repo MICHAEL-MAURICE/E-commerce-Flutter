@@ -9,14 +9,20 @@ class CachHelper{
 
   static Future <bool> setData(
   {required String key,
-  required bool value}
+  required dynamic value}
       )async{
-    
+    if(value is bool)
     return await shared!.setBool(key, value);
+    if(value is String)
+      return await shared!.setString(key, value);
+    if(value is int)
+      return await shared!.setInt(key, value);
+
+      return await shared!.setDouble(key, value);
   }
- static bool? getData(
+ static dynamic? getData(
   {required String key}){
-    return shared!.getBool(key);
+    return shared!.get(key);
 
 
   }

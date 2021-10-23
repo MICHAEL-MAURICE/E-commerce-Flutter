@@ -1,10 +1,13 @@
 import 'package:ecommerce_flutter/modules/onboarding/Rejstertion/Rejesteration_Screen.dart';
+import 'package:ecommerce_flutter/modules/onboarding/Shop_layout/Shoplayout.dart';
+import 'package:ecommerce_flutter/network/Local/CachHelper.dart';
 import 'package:ecommerce_flutter/shared/components/component/Components.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'Cubit/Cubit.dart';
 import 'Cubit/States.dart';
@@ -18,6 +21,29 @@ class Login_Shop extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext context)=>ShopLoginCubit(ShopLoginIntializeState()),
       child: BlocConsumer<ShopLoginCubit,LoginStates>(
+        listener: (context,state){
+
+          if(state is ShopLoginSuccessState){
+            if(state.loginModel.status){
+
+              buildToast(state.loginModel.message,Toaststate.Sucssec);
+              CachHelper.setData(key: 'Token', value: state.loginModel.data.token).then((value) {
+
+                navigationAndFinish(context,Shoplayout());
+
+              }).catchError((error){
+
+                buildToast(error,Toaststate.Error);
+              });
+            }
+            else {
+              buildToast(state.loginModel.message,Toaststate.Error);
+            }
+          }
+
+
+        },
+
         builder:(context,state){
           return Scaffold(
               appBar: AppBar(),
@@ -77,13 +103,14 @@ class Login_Shop extends StatelessWidget {
                       SizedBox(height:30.0,),
                       if(state is! ShopLoginLoadingState)
 
-                      defaultButton(function: (){
 
-
-                          if(formKey.currentState!.validate()){
+                        defaultButton(function: (){
                         ShopLoginCubit.get(context).userlogin(email: emailController.text,
-                            password: passwordController.text);}
+                            password: passwordController.text);
                       },text: "LOGIN")
+
+
+
                        else
                         CirclerProgressloadinh()
 
@@ -100,7 +127,7 @@ class Login_Shop extends StatelessWidget {
               )
           );
         } ,
-        listener: (context,state){},
+
 
       ),
     );

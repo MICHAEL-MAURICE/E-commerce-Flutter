@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 
@@ -118,5 +119,27 @@ Widget articleBuilder(list, context) {
   itemCount: 10,);
   else
    return Center(child: CircularProgressIndicator());
+
+}
+enum Toaststate{Sucssec,Error,Worning}
+Color setColor(Toaststate color){
+  if(color==Toaststate.Sucssec)
+    return Colors.green;
+  else if(color==Toaststate.Error)
+    return Colors.red;
+  return Colors.amberAccent;
+}
+
+ buildToast(String msg,Toaststate state){
+
+  return Fluttertoast.showToast(
+    msg: msg,
+    toastLength: Toast.LENGTH_LONG,
+    gravity: ToastGravity.BOTTOM,
+    timeInSecForIosWeb: 1,
+    backgroundColor: setColor(state),
+    textColor: Colors.white,
+    fontSize: 16.0
+);
 
 }

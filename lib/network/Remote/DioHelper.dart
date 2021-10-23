@@ -49,7 +49,7 @@ class Diohelper{
 
     static Future<Response> getdata({
    required String url,
-     required Map<String,dynamic>map,
+      Map<String,dynamic>?map,
        String lang = 'ar',
       String? token
  })async{

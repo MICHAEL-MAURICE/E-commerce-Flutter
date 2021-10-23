@@ -1,3 +1,4 @@
+import 'package:ecommerce_flutter/modules/onboarding/Login_Shop/Login_Shop.dart';
 import 'package:ecommerce_flutter/modules/onboarding/Onboarding.dart';
 import 'package:ecommerce_flutter/network/Local/CachHelper.dart';
 import 'package:ecommerce_flutter/network/Remote/DioHelper.dart';
@@ -10,13 +11,30 @@ import 'package:flutter/services.dart';
 
 import 'layout/Homelayout.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'modules/onboarding/Shop_layout/Shoplayout.dart';
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
   await CachHelper.init();
   Diohelper.init();
+Widget widget;
 
   bool? isDark =CachHelper.getData(key: 'themeModebool');
-  runApp(MyApp(isDark));
+  bool? onBoarding = CachHelper.getData(key: "onboarding");
+  String? token = CachHelper.getData(key: "Token");
+  if(onBoarding!=null){
+    if(token !=null){
+      widget= Shoplayout();
+    }else{
+      widget=Login_Shop();
+    }
+  }
+  else{
+    widget=Onboarding();
+  }
+
+
+  runApp(MyApp(isDark,widget));
 }
 
 class app extends StatelessWidget {
@@ -38,7 +56,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
 
   final  bool? isDark;
-  MyApp(this.isDark);
+  final Widget widget;
+  MyApp(this.isDark,this.widget);
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -55,7 +74,7 @@ var cubit = Appcubit.get(context);
                theme:lightTheme,
                darkTheme: darkTheme,
                themeMode: cubit.themeModebool?ThemeMode.light:ThemeMode.dark,
-               home: Onboarding()
+               home:widget
            );
 
          },listener: (BuildContext context, Object? state) {  },
