@@ -11,6 +11,7 @@ import 'package:ecommerce_flutter/network/End_points.dart';
 import 'package:ecommerce_flutter/network/Local/CachHelper.dart';
 import 'package:ecommerce_flutter/network/Remote/DioHelper.dart';
 import 'package:ecommerce_flutter/shared/Cubit/States.dart';
+import 'package:ecommerce_flutter/shared/components/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -37,10 +38,10 @@ List<Widget>Screens=[
 ];
 
 List<BottomNavigationBarItem>items=[
-  BottomNavigationBarItem(icon: Icon(Icons.home),title: Text("Products")),
-  BottomNavigationBarItem(icon: Icon(Icons.favorite),title: Text("Favourite")),
-  BottomNavigationBarItem(icon: Icon(Icons.category),title: Text("Categories")),
-  BottomNavigationBarItem(icon: Icon(Icons.settings),title: Text("Settings")),
+  BottomNavigationBarItem(icon: Icon(Icons.home_outlined),title: Text("Products")),
+  BottomNavigationBarItem(icon: Icon(Icons.favorite_border_outlined),title: Text("Favourite")),
+  BottomNavigationBarItem(icon: Icon(Icons.category_outlined),title: Text("Categories")),
+  BottomNavigationBarItem(icon: Icon(Icons.settings_outlined),title: Text("Settings")),
 ];
 
 
@@ -68,11 +69,15 @@ void changeTheme({bool? isDark} ){
 
 
 }
-  Shophomemodel? homeModel;
+  HomeModel? homeModel;
 void gethomedata(){
   emit(HomeDataLoadingState());
-  Diohelper.getdata(url:HOME).then((value) {
-    homeModel=Shophomemodel.fromJson(value.data);
+  Diohelper.getdata(url:HOME,
+      token: token!
+  
+  ).then((value) {
+    homeModel=HomeModel.fromJson(value.data);
+    print(homeModel!.data!.banners![0].image);
     emit(HomeDataSuccessState());
 
 

@@ -4,6 +4,7 @@ import 'package:ecommerce_flutter/network/Local/CachHelper.dart';
 import 'package:ecommerce_flutter/network/Remote/DioHelper.dart';
 import 'package:ecommerce_flutter/shared/Cubit/Cubit.dart';
 import 'package:ecommerce_flutter/shared/Cubit/States.dart';
+import 'package:ecommerce_flutter/shared/components/constants/constants.dart';
 import 'package:ecommerce_flutter/shared/components/style/colors/Themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,7 +22,7 @@ Widget widget;
 
   bool? isDark =CachHelper.getData(key: 'themeModebool');
   bool? onBoarding = CachHelper.getData(key: "onboarding");
-  String? token = CachHelper.getData(key: "Token");
+  token = CachHelper.getData(key: "Token");
   if(onBoarding!=null){
     if(token !=null){
       widget= Shoplayout();
@@ -62,7 +63,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
 
-      create: (BuildContext context) =>Appcubit()..changeTheme(isDark: isDark),
+      create: (BuildContext context) =>Appcubit()..changeTheme(isDark: isDark)..gethomedata(),
 
       child: BlocConsumer<Appcubit,AppState>(
          builder: (BuildContext context, state) {
