@@ -1,3 +1,4 @@
+import 'package:ecommerce_flutter/network/Local/CachHelper.dart';
 import 'package:ecommerce_flutter/shared/Cubit/Cubit.dart';
 import 'package:ecommerce_flutter/shared/Cubit/States.dart';
 import 'package:ecommerce_flutter/shared/components/component/Components.dart';
@@ -36,7 +37,7 @@ class Onboarding extends StatelessWidget {
       Appcubit Cubit =Appcubit.get(context);
       return Scaffold(
         appBar: AppBar(actions: [
-          TextButton(onPressed:(){navigationAndFinish(context,Login_Shop());}, child:Text("SKIP",style: TextStyle(fontSize: 18.0),) ),
+          TextButton(onPressed:(){submit(context);}, child:Text("SKIP",style: TextStyle(fontSize: 18.0),) ),
         ],),
         body: Padding(
           padding: const EdgeInsets.only(top: 150.0,right: 20.0,left: 20.0,bottom: 30.0),
@@ -74,7 +75,8 @@ class Onboarding extends StatelessWidget {
               ,Spacer(),
               FloatingActionButton(onPressed: (){
                 if(Cubit.isLast){
-                  navigationAndFinish(context,Login_Shop());
+    submit(context);
+
                 }
                 else {
                   onboardingController.nextPage(duration: Duration(milliseconds: 750),
@@ -87,6 +89,17 @@ class Onboarding extends StatelessWidget {
 
       );
     }, listener: (context,state){});
+
+  }
+
+  void submit(context){
+CachHelper.setData(key: "onboarding", value: true).then((value) {
+  if(value)
+    navigationAndFinish(context,Login_Shop());
+
+});
+
+
   }
 
   Widget itemSpacer( Bordingmodel model){

@@ -10,19 +10,64 @@ class Diohelper{
 
     dio=Dio(
         BaseOptions(
-          baseUrl: "https://newsapi.org/"
-              ,receiveDataWhenStatusError: true
+          baseUrl: "https://student.valuxapps.com/api/"
+              ,receiveDataWhenStatusError: true,
+
+headers: {
+
+  "Content-Type":"application/json"
+}
         )
 
     );
   }
 
-   static Future<Response> getdata({
-  required String url,
-    required Map<String,dynamic>map
-})async{
+  // ignore: non_constant_identifier_names
+  static Future<Response> postdata (
+      {
+        required String url,
+        Map<String,dynamic>?query,
+        required Map<String,String>data,
+        String lang = 'en',
+        String ?token=''
 
-    return await dio.get(url,queryParameters: map);
+      }
+
+      ){
+    dio.options.headers={
+     // "Content-Type":"application/json",
+      'lang':lang,
+      'Authorization':token!
+      ,
+
+    };
+    return dio.post(url,
+
+        queryParameters: query,
+        data: data);
+
 
   }
+
+
+
+    static Future<Response> getdata({
+   required String url,
+      Map<String,dynamic>?map,
+       String lang = 'en',
+      String? token
+ })async{
+    dio.options.headers={
+     // "Content-Type":"application/json",
+      'lang':lang,
+      'Authorization':token!,
+
+
+    };
+
+     return await dio.get(url,queryParameters: map);
+
+ }
+
+
 }

@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 
@@ -19,11 +20,13 @@ Widget defultTextField({required TextEditingController  controller,
   required Function validation,
    required  String  title,
   required IconData prefix,
+
   IconData ?suffix,
   Function? suffixPress,
   required  bool isClicked,
 })=>TextFormField(
 controller: controller,
+
 keyboardType: type,
  onChanged: (s){onChange!(s);},
   onFieldSubmitted: (s){onSubmit!(s);},
@@ -39,8 +42,8 @@ validator: (s){
   decoration: InputDecoration(
     labelText: title,
     prefixIcon: Icon(prefix),
-    suffix: suffix!=null?IconButton(onPressed: (){suffixPress!();}, icon: Icon(suffix)):null,
-    border: OutlineInputBorder()
+    suffixIcon: suffix!=null?IconButton(onPressed: (){suffixPress!();}, icon: Icon(suffix)):null,
+    border: OutlineInputBorder(),
 
   ),
 
@@ -48,7 +51,34 @@ validator: (s){
 );
 
 
-//
+//defult Button
+Widget defaultButton({
+  double width = double.infinity,
+  Color background = Colors.blue,
+  bool isUpperCase = true,
+  double radius = 3.0,
+  required Function function,
+  required String text,
+}) =>
+    Container(
+      width: width,
+      height: 50.0,
+      child: MaterialButton(
+        onPressed:() {!function();},
+        child: Text(
+          isUpperCase ? text.toUpperCase() : text,
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(
+          radius,
+        ),
+        color: background,
+      ),
+    );
 
 
 
@@ -89,5 +119,27 @@ Widget articleBuilder(list, context) {
   itemCount: 10,);
   else
    return Center(child: CircularProgressIndicator());
+
+}
+enum Toaststate{Sucssec,Error,Worning}
+Color setColor(Toaststate color){
+  if(color==Toaststate.Sucssec)
+    return Colors.green;
+  else if(color==Toaststate.Error)
+    return Colors.red;
+  return Colors.amberAccent;
+}
+
+ buildToast(String msg,Toaststate state){
+
+  return Fluttertoast.showToast(
+    msg: msg,
+    toastLength: Toast.LENGTH_LONG,
+    gravity: ToastGravity.BOTTOM,
+    timeInSecForIosWeb: 1,
+    backgroundColor: setColor(state),
+    textColor: Colors.white,
+    fontSize: 16.0
+);
 
 }
